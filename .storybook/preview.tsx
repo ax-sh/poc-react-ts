@@ -1,11 +1,11 @@
-import type { Preview, ReactRenderer } from "@storybook/react";
-import { DecoratorFunction } from "@storybook/csf";
+import type { DecoratorFunction } from '@storybook/csf'
+import type { Preview, ReactRenderer } from '@storybook/react'
 
-import "../src/index.css"; // replace with the name of your tailwind css file
+import { initialize, mswLoader } from 'msw-storybook-addon'
 
-import { initialize, mswLoader } from "msw-storybook-addon";
-import { handlers } from "./handlers.js";
-import {MswReactQueryDecorator} from "./msw-react-query-decorator.js";
+import { handlers } from './handlers.js'
+import { MswReactQueryDecorator } from './msw-react-query-decorator.js'
+import '../src/index.css' // replace with the name of your tailwind css file
 
 // Initialize MSW
 initialize({
@@ -13,33 +13,33 @@ initialize({
   // it prints noisy warnings, hiding important ones.
   onUnhandledRequest(request, print) {
     try {
-      const url = new URL(request.url);
+      const url = new URL(request.url)
 
       // Define patterns to ignore
       const ignoredPrefixes = [
-        "/sb-common-assets",
-        "/index.json",
-        "/.storybook",
-      ];
-      const ignoredExtensions = [".png", ".svg", ".css", ".yaml", ".tsx"];
+        '/sb-common-assets',
+        '/index.json',
+        '/.storybook',
+      ]
+      const ignoredExtensions = ['.png', '.svg', '.css', '.yaml', '.tsx']
 
       // Check if URL should be ignored based on prefix or extension
-      const shouldIgnore = ignoredPrefixes.some((prefix) =>
-        url.pathname.startsWith(prefix)
-      ) ||
-        ignoredExtensions.some((ext) => url.pathname.endsWith(ext));
+      const shouldIgnore = ignoredPrefixes.some(prefix =>
+        url.pathname.startsWith(prefix),
+      )
+      || ignoredExtensions.some(ext => url.pathname.endsWith(ext))
 
       if (shouldIgnore) {
-        return;
+        return
       }
-    } catch {
-      console.log(33)
+    }
+    catch {
       // URL parsing failed, continue to warning
     }
 
-    print.warning();
+    print.warning()
   },
-}, handlers);
+}, handlers)
 const preview: Preview = {
   loaders: [mswLoader],
   parameters: {
@@ -50,12 +50,12 @@ const preview: Preview = {
       },
     },
   },
-};
+}
 
 export const decorators: DecoratorFunction<ReactRenderer>[] = [
   // add react-query to storybook
   // withReactQueryProvider,
-  MswReactQueryDecorator
-];
+  MswReactQueryDecorator,
+]
 
-export default preview;
+export default preview

@@ -17,21 +17,18 @@ const consoleLinter = {
   },
 }
 
-const linterIgnore = { ignores: ['dist', 'public', '.storybook'] }
+const linterIgnore = { ignores: ['dist', '**/public/*'] }
 
 export default antfu(
-  { test: true, react: true, typescript: { tsconfigPath: 'tsconfig.json' } },
+  { test: true, react: true, typescript: { tsconfigPath: 'tsconfig.node.json' } },
   reactQueryLinter,
   linterIgnore,
   consoleLinter,
+  {
+    rules: { 'node/prefer-global/process': 'off', 'eslint-comments/no-unlimited-disable': 'off' },
+  },
 )
-//     .prepend({ languageOptions: {
-//   parserOptions: {
-//     projectService: {
-//       allowDefaultProject: true,
-//     },
-//   },
-// } })
+
 // import js from '@eslint/js'
 // import globals from 'globals'
 // import reactHooks from 'eslint-plugin-react-hooks'
