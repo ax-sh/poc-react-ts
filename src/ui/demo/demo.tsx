@@ -1,9 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import {
+  FillAndCenterChildren,
+  FillAndCenterError,
+  FillAndCenterLoading,
+} from '../fill-and-center-children.tsx'
 
 function useDemoData() {
   async function queryFn() {
-    const x = await axios.get<{ health: string }>('/health')
+    const x = await axios.get<{ health: string }>('/api/cards')
     return x.data
   }
   return useQuery({ queryKey: ['data'], queryFn })
@@ -11,15 +16,17 @@ function useDemoData() {
 
 export default function Demo() {
   const { data, isLoading, isError } = useDemoData()
-  if (isLoading)
-    return <h1>Loading</h1>
-  if (isError)
-    return <h1>Error</h1>
+  if (isLoading) {
+    return <FillAndCenterLoading />
+  }
+  if (isError) {
+    return <FillAndCenterError />
+  }
 
   return (
-    <section className="demo bg-red-500">
+    <FillAndCenterChildren className="bg-green-500">
       <h1>Demo</h1>
       <pre>{JSON.stringify(data, null, 2)}</pre>
-    </section>
+    </FillAndCenterChildren>
   )
 }

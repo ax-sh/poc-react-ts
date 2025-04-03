@@ -10,8 +10,28 @@ const reactQueryLinter = {
   },
 }
 
-const linterIgnore = { ignores: ['dist', 'public'] }
-export default antfu({ react: true, typescript: { tsconfigPath: 'tsconfig.json' } }, reactQueryLinter, linterIgnore)
+const consoleLinter = {
+  files: ['**/*.{ts,tsx}'],
+  rules: {
+    'no-console': ['warn', { allow: ['debug', 'warn', 'critical'] }],
+  },
+}
+
+const linterIgnore = { ignores: ['dist', 'public', '.storybook'] }
+
+export default antfu(
+  { test: true, react: true, typescript: { tsconfigPath: 'tsconfig.json' } },
+  reactQueryLinter,
+  linterIgnore,
+  consoleLinter,
+)
+//     .prepend({ languageOptions: {
+//   parserOptions: {
+//     projectService: {
+//       allowDefaultProject: true,
+//     },
+//   },
+// } })
 // import js from '@eslint/js'
 // import globals from 'globals'
 // import reactHooks from 'eslint-plugin-react-hooks'

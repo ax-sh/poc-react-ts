@@ -7,7 +7,6 @@ function App() {
         <h1 className="text-8xl">Loading</h1>
       </FillAndCenterChildren>
     </main>
-
   )
 }
 
