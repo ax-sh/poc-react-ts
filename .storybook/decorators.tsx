@@ -16,8 +16,8 @@ export const mockedQueryClient = new QueryClient({
 function WithReactQueryProvider({ children }: PropsWithChildren) {
   return (
     <QueryClientProvider client={mockedQueryClient}>
-      <ReactQueryDevtools />
       {children}
+      {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} />}
     </QueryClientProvider>
   );
 }
@@ -27,7 +27,10 @@ export const withReactQueryProvider: DecoratorFunction<ReactRenderer> = (
 ) => {
   return (
     <WithReactQueryProvider>
+      <div className={'h-dvh w-dvw'}>
+
       <Story />
+      </div>
     </WithReactQueryProvider>
   );
 };

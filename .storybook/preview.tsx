@@ -1,10 +1,11 @@
 import type { Preview, ReactRenderer } from "@storybook/react";
 import { DecoratorFunction } from "@storybook/csf";
-import { withReactQueryProvider } from "./decorators.js";
+
 import "../src/index.css"; // replace with the name of your tailwind css file
 
 import { initialize, mswLoader } from "msw-storybook-addon";
 import { handlers } from "./handlers.js";
+import {MswReactQueryDecorator} from "./msw-react-query-decorator.js";
 
 // Initialize MSW
 initialize({
@@ -32,6 +33,7 @@ initialize({
         return;
       }
     } catch {
+      console.log(33)
       // URL parsing failed, continue to warning
     }
 
@@ -52,7 +54,8 @@ const preview: Preview = {
 
 export const decorators: DecoratorFunction<ReactRenderer>[] = [
   // add react-query to storybook
-  withReactQueryProvider,
+  // withReactQueryProvider,
+  MswReactQueryDecorator
 ];
 
 export default preview;

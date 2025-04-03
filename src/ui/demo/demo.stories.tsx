@@ -19,7 +19,7 @@ type Story = StoryObj<typeof meta>
 const handlers = {
   success: [
     http.get('/api/cards', async () => {
-      await delay('real')
+      await delay(2000)
       return HttpResponse.json({
         cards: [
           { id: '1', title: 'Card 1', description: 'Description 1' },
@@ -42,7 +42,6 @@ const handlers = {
   serverError: [
     http.get('/api/cards', () => {
       return HttpResponse.error()
-      // return res(ctx.status(500));
     }),
   ],
 }
@@ -66,7 +65,7 @@ export const Loading: Story = {
 }
 
 export const ServerError: Story = {
-  parameters: {
-    msw: handlers.serverError,
-  },
+  // parameters: {
+  //   msw: handlers.serverError,
+  // },
 }
