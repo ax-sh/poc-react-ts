@@ -18,7 +18,8 @@ type Story = StoryObj<typeof meta>
 
 const handlers = {
   success: [
-    http.get('/api/cards', () => {
+    http.get('/api/cards', async () => {
+      await delay('real')
       return HttpResponse.json({
         cards: [
           { id: '1', title: 'Card 1', description: 'Description 1' },
@@ -28,7 +29,7 @@ const handlers = {
     }),
   ],
   empty: [
-    http.get('/api/cards', () => {
+    http.get('/api/cards', async () => {
       return HttpResponse.json({ cards: [] })
     }),
   ],
