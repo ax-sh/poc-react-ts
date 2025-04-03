@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import Demo from './demo'
 
-//function Demo() {
+// function Demo() {
 //  return <div className="bg-red-500">Test Demo</div>
-//}
+// }
 const meta = {
   title: 'UI/Demo',
   component: Demo,
@@ -20,11 +20,11 @@ type Story = StoryObj<typeof meta>
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
   args: {},
-  parameters:{}
+  parameters: {},
 }
 export const Fullscreen: Story = {
   args: {},
-  parameters:{
+  parameters: {
     layout: 'fullscreen',
-  }
+  },
 }

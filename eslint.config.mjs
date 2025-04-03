@@ -1,15 +1,15 @@
 import antfu from '@antfu/eslint-config'
-
+import pluginQuery from '@tanstack/eslint-plugin-query'
 
 const reactQueryLinter = {
-        plugins: {
-            '@tanstack/query': pluginQuery,
-        },
-        rules: {
-            '@tanstack/query/exhaustive-deps': 'error',
-        },
-    }
-export default antfu({react:true, typescript: { tsconfigPath: 'tsconfig.json' }}, {reactQueryLinter})
+  plugins: {
+    '@tanstack/query': pluginQuery,
+  },
+  rules: {
+    '@tanstack/query/exhaustive-deps': 'error',
+  },
+}
+export default antfu({ react: true, typescript: { tsconfigPath: 'tsconfig.json' } }, reactQueryLinter)
 // import js from '@eslint/js'
 // import globals from 'globals'
 // import reactHooks from 'eslint-plugin-react-hooks'
