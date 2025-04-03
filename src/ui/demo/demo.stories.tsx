@@ -1,18 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import {{pascalCase name}} from './{{kebabCase name}}'
+import Demo from './demo'
 
-//function {{pascalCase name}}() {
-//  return <div className="bg-red-500">Test {{pascalCase name}}</div>
+//function Demo() {
+//  return <div className="bg-red-500">Test Demo</div>
 //}
 const meta = {
-  title: 'UI/{{pascalCase name}}',
-  component: {{pascalCase name}},
+  title: 'UI/Demo',
+  component: Demo,
   tags: ['autodocs'],
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: 'centered',
   },
-} satisfies Meta<typeof {{pascalCase name}}>
+} satisfies Meta<typeof Demo>
 
 export default meta
 type Story = StoryObj<typeof meta>
