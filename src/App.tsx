@@ -1,10 +1,13 @@
-import './App.css'
+import { FillAndCenterChildren } from './ui/fill-and-center-children.tsx'
 
 function App() {
   return (
-    <section className="h-full w-full">
+    <main className="h-dvh w-dvw">
+      <FillAndCenterChildren className="bg-yellow-500">
+        <h1 className="text-8xl">Loading</h1>
+      </FillAndCenterChildren>
+    </main>
 
-    </section>
   )
 }
 

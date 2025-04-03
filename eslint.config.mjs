@@ -9,7 +9,9 @@ const reactQueryLinter = {
     '@tanstack/query/exhaustive-deps': 'error',
   },
 }
-export default antfu({ react: true, typescript: { tsconfigPath: 'tsconfig.json' } }, reactQueryLinter)
+
+const linterIgnore = { ignores: ['dist', 'public'] }
+export default antfu({ react: true, typescript: { tsconfigPath: 'tsconfig.json' } }, reactQueryLinter, linterIgnore)
 // import js from '@eslint/js'
 // import globals from 'globals'
 // import reactHooks from 'eslint-plugin-react-hooks'
