@@ -1,7 +1,7 @@
-import type { Decorator } from '@storybook/react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { useMemo } from 'react'
+import type { Decorator } from "@storybook/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { useMemo } from "react";
 
 export const MswReactQueryDecorator: Decorator = (Story) => {
   // Create a unique query client for each story render
@@ -20,17 +20,17 @@ export const MswReactQueryDecorator: Decorator = (Story) => {
           // suspense: false,
         },
       },
-    })
-  }, []) // Recreate when story changes
+    });
+  }, []); // Recreate when story changes
 
   return (
     <QueryClientProvider client={queryClient}>
       <div className="h-dvh w-dvw">
         <Story />
-        {process.env.NODE_ENV === 'development' && (
+        {process.env.NODE_ENV === "development" && (
           <ReactQueryDevtools initialIsOpen={false} />
         )}
       </div>
     </QueryClientProvider>
-  )
-}
+  );
+};

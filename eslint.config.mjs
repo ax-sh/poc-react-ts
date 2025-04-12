@@ -20,12 +20,19 @@ const consoleLinter = {
 const linterIgnore = { ignores: ['dist', '**/public/*'] }
 
 export default antfu(
-  { test: true, react: true, typescript: { tsconfigPath: 'tsconfig.node.json' } },
+  {
+    test: true,
+    react: true,
+    typescript: { tsconfigPath: 'tsconfig.node.json' },
+  },
   reactQueryLinter,
   linterIgnore,
   consoleLinter,
   {
-    rules: { 'node/prefer-global/process': 'off', 'eslint-comments/no-unlimited-disable': 'off' },
+    rules: {
+      'node/prefer-global/process': 'off',
+      'eslint-comments/no-unlimited-disable': 'off',
+    },
   },
 )
 
