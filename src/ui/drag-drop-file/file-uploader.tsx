@@ -16,8 +16,11 @@ function UploadComponent() {
   )
 }
 
+type FileWithProgress = File & { progress: number ,size:number}
+
+
 function UploadFIleCard(props: {
-  file: File & { progress: number }
+  file: FileWithProgress
   onClick: () => void
 }) {
   return (
@@ -59,7 +62,7 @@ function UploadFIleCard(props: {
 }
 
 export function FileUploader() {
-  const [files, setFiles] = useState([
+  const [files, setFiles] = useState<FileWithProgress[]>([
     { name: 'Report_name_01.cvs', size: '15 MB', progress: 100 },
     { name: 'Report_name_02.cvs', size: '15 MB', progress: 80 },
     { name: 'Report_name_03.cvs', size: '15 MB', progress: 40 },
