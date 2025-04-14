@@ -132,12 +132,12 @@ function DropFileOverlay({
     maxFiles,
     noClick,
   })
-
+const hideHint = !noClick
   return (
     <section className={clsx('h-full w-full grid ', !noClick && 'cursor-pointer')}>
       <div {...getRootProps()} className="grid place-content-center h-full w-full">
         <input {...getInputProps()} />
-        {!noClick && (
+
           <div className="border-2 border-dashed border-blue-200 rounded-lg p-8 mb-6">
             <div className="flex flex-col items-center justify-center">
               <div className="bg-blue-100 p-3 rounded-full mb-4">
@@ -151,7 +151,7 @@ function DropFileOverlay({
 
             </div>
           </div>
-        )}
+
         {children}
       </div>
     </section>
