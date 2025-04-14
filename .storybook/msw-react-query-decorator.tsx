@@ -1,12 +1,12 @@
 import type { Decorator } from '@storybook/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { useMemo } from 'react'
+import React from 'react'
 
 export const MswReactQueryDecorator: Decorator = (Story) => {
   // Create a unique query client for each story render
   // This ensures we have a fresh cache for each story
-  const queryClient = useMemo(() => {
+  const queryClient = React.useMemo(() => {
     return new QueryClient({
       defaultOptions: {
         queries: {
