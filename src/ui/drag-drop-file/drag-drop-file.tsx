@@ -132,7 +132,7 @@ function DropFileOverlay({
       <div {...getRootProps()} className="grid place-content-center h-full w-full">
         <input {...getInputProps()} />
 
-        <div className={clsx('border-2 border-dashed border-blue-200 rounded-lg p-8 mb-6', hideHint && 'hidden')}>
+        <div className={clsx('border-2 border-dashed border-blue-200 rounded-lg p-8 m-6', hideHint && 'hidden')}>
           <div className="flex flex-col items-center justify-center">
             <div className="bg-blue-100 p-3 rounded-full mb-4">
               <Upload className="text-blue-500" size={24} />
@@ -156,7 +156,7 @@ function DropFileOverlay({
 export default function DragDropFile() {
   const [files, setFiles] = useState<File[]>([])
   const handleFileDrop = useCallback((files: File[]) => {
-    console.log('Dropped files:', files)
+    console.debug('Dropped files:', files)
     setFiles(oldFiles => [...oldFiles, ...files])
   }, [])
 

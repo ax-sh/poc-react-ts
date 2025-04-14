@@ -21,7 +21,7 @@ const consoleLinter = {
 }
 
 const defaultTsConfigForEslint = {
-  files: ['**/*.ts', '**/*.tsx'],
+  files: ['.storybook/**/*.{ts,tsx}'],
   languageOptions: {
     parser: tsParser,
     parserOptions: {
@@ -39,6 +39,16 @@ const defaultTsConfigForEslint = {
 
 const linterIgnore = { ignores: ['dist', '**/public/*', '!.storybook'] }
 
+const storybookLinter = {
+  files: ['**/*.stories.@(ts|tsx|js|jsx|mjs|cjs)'],
+  rules: {
+    // example of overriding a rule
+    'storybook/hierarchy-separator': 'error',
+    // example of disabling a rule
+    'storybook/default-exports': 'off',
+  },
+}
+
 export default antfu(
   {
     test: true,
@@ -50,15 +60,7 @@ export default antfu(
   consoleLinter,
   defaultTsConfigForEslint,
   ...storybook.configs['flat/recommended'],
-  {
-    files: ['**/*.stories.@(ts|tsx|js|jsx|mjs|cjs)'],
-    rules: {
-      // example of overriding a rule
-      'storybook/hierarchy-separator': 'error',
-      // example of disabling a rule
-      'storybook/default-exports': 'off',
-    },
-  },
+  storybookLinter,
   {
     rules: {
       'node/prefer-global/process': 'off',

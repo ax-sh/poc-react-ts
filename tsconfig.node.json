@@ -25,6 +25,6 @@
     "vite.config.ts",
     "plopfile.ts",
     "vitest.workspace.ts",
-    ".storybook"
+    ".storybook/**/*"
   ]
 }
