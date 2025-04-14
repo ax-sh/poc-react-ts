@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react'
 import type { DropEvent, DropzoneOptions, FileRejection } from 'react-dropzone'
 import clsx from 'clsx'
-import { Upload } from 'lucide-react'
+import { Upload, X } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 
@@ -132,7 +132,9 @@ function DropFileOverlay({
       <div {...getRootProps()} className="grid place-content-center h-full w-full">
         <input {...getInputProps()} />
 
-        <div className={clsx('border-2 border-dashed border-blue-200 rounded-lg p-8 m-6', hideHint && 'hidden')}>
+        <div
+          className={clsx('border-2 border-dashed border-blue-200 rounded-lg p-8 m-6', hideHint && 'hidden')}
+        >
           <div className="flex flex-col items-center justify-center">
             <div className="bg-blue-100 p-3 rounded-full mb-4">
               <Upload className="text-blue-500" size={24} />
@@ -150,6 +152,22 @@ function DropFileOverlay({
   )
 }
 
+function FileCard({ data }: { data: File }) {
+  return <div>{data.name}</div>
+}
+
+interface RemoveButtonProps {
+  onClick?: () => void
+}
+
+function RemoveButton({ onClick }: RemoveButtonProps) {
+  return (
+    <button className="cursor-pointer" type="button" onClick={onClick}>
+      <X />
+    </button>
+  )
+}
+
 /**
  * Main file upload component with drag and drop functionality
  */
@@ -159,6 +177,10 @@ export default function DragDropFile() {
     console.debug('Dropped files:', files)
     setFiles(oldFiles => [...oldFiles, ...files])
   }, [])
+
+  const handleRemoveFile = (index: number) => {
+    setFiles(files.filter((_, i) => i !== index))
+  }
 
   return (
     <section className="h-screen">
@@ -170,9 +192,16 @@ export default function DragDropFile() {
         // maxSize={5242880} // 5MB
         // maxFiles={5}
       >
-        <pre>
-          {JSON.stringify(files, null, 2)}
-        </pre>
+        <section className="grid grid-cols-3 gap-2">
+          {files.map((file, i) => {
+            return (
+              <div key={file.name}>
+                <RemoveButton onClick={() => handleRemoveFile(i)} />
+                <FileCard data={file} />
+              </div>
+            )
+          })}
+        </section>
       </DropFileOverlay>
 
     </section>
