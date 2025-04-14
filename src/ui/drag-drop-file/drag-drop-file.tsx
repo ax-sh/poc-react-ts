@@ -1,7 +1,8 @@
 import type { PropsWithChildren } from 'react'
-import type { DropEvent, FileRejection } from 'react-dropzone'
+import type { DropEvent, DropzoneOptions, FileRejection } from 'react-dropzone'
+import clsx from 'clsx'
 import { Upload } from 'lucide-react'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 
 // function FileUploader() {
@@ -92,15 +93,17 @@ import { useDropzone } from 'react-dropzone'
 /**
  * Props for the DropFileOverlay component
  */
-interface DropFileOverlayProps {
+type OnDropFunction = <T extends File>(
+  acceptedFiles: T[],
+  fileRejections: FileRejection[],
+  event: DropEvent
+) => void
+
+type DropFileOverlayProps = Pick<DropzoneOptions, 'accept' | 'maxFiles' | 'maxSize' | 'noClick'> & {
   /** Function called when files are dropped */
-  onFileDrop: (acceptedFiles: File[]) => void
-  /** Optional allowed file types */
-  accept?: Record<string, string[]>
-  /** Optional maximum file size in bytes */
-  maxSize?: number
-  /** Optional maximum number of files */
-  maxFiles?: number
+  onFileDrop: OnDropFunction
+  // onFileDrop: (acceptedFiles: File[]) => void
+
 }
 
 /**
@@ -111,39 +114,45 @@ function DropFileOverlay({
   accept,
   maxSize,
   maxFiles,
-
+  noClick,
+  children,
 }: PropsWithChildren<DropFileOverlayProps>) {
-  const onDrop = useCallback(
-    (acceptedFiles: File[], _fileRejections: FileRejection[], _event: DropEvent) => {
-      onFileDrop(acceptedFiles)
-    },
-    [onFileDrop],
-  )
+  const onDrop = useCallback(onFileDrop, [onFileDrop])
+  // const onDrop = useCallback(
+  //   (acceptedFiles: File[], _fileRejections: FileRejection[], _event: DropEvent) => {
+  //     onFileDrop(acceptedFiles)
+  //   },
+  //   [onFileDrop],
+  // )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept,
     maxSize,
     maxFiles,
+    noClick,
   })
 
   return (
-    <section className="h-full w-full grid cursor-pointer">
+    <section className={clsx('h-full w-full grid ', !noClick && 'cursor-pointer')}>
       <div {...getRootProps()} className="grid place-content-center h-full w-full">
         <input {...getInputProps()} />
-        <div className="border-2 border-dashed border-blue-200 rounded-lg p-8 mb-6">
-          <div className="flex flex-col items-center justify-center">
-            <div className="bg-blue-100 p-3 rounded-full mb-4">
-              <Upload className="text-blue-500" size={24} />
+        {!noClick && (
+          <div className="border-2 border-dashed border-blue-200 rounded-lg p-8 mb-6">
+            <div className="flex flex-col items-center justify-center">
+              <div className="bg-blue-100 p-3 rounded-full mb-4">
+                <Upload className="text-blue-500" size={24} />
+              </div>
+              <p className="text-gray-500 text-sm mb-1 text-center w-[400px]">
+
+                {isDragActive ? ' Drop the files here...' : 'Drag \'n\' drop some files here, or click to select files'}
+              </p>
+              {/* <p className="text-gray-400 text-xs">Maximum file size 50 MB</p> */}
+
             </div>
-            <p className="text-gray-500 text-sm mb-1 text-center w-[400px]">
-
-              {isDragActive ? ' Drop the files here...' : 'Drag \'n\' drop some files here, or click to select files'}
-            </p>
-            {/* <p className="text-gray-400 text-xs">Maximum file size 50 MB</p> */}
-
           </div>
-        </div>
+        )}
+        {children}
       </div>
     </section>
   )
@@ -153,20 +162,25 @@ function DropFileOverlay({
  * Main file upload component with drag and drop functionality
  */
 export default function DragDropFile() {
+  const [files, setFiles] = useState<File[]>([])
   const handleFileDrop = useCallback((files: File[]) => {
     console.log('Dropped files:', files)
+    setFiles(oldFiles => [...oldFiles, ...files])
   }, [])
 
   return (
     <section className="h-screen">
       <DropFileOverlay
         onFileDrop={handleFileDrop}
+        noClick={!!files.length}
         // Uncomment these optional props as needed
         // accept={{ 'image/*': ['.jpeg', '.png', '.jpg'] }}
         // maxSize={5242880} // 5MB
         // maxFiles={5}
       >
-        hi
+        <pre>
+          {JSON.stringify(files, null, 2)}
+        </pre>
       </DropFileOverlay>
 
     </section>

@@ -1,5 +1,8 @@
 import antfu from '@antfu/eslint-config'
 import pluginQuery from '@tanstack/eslint-plugin-query'
+import tsPlugin from '@typescript-eslint/eslint-plugin'
+import tsParser from '@typescript-eslint/parser'
+import storybook from 'eslint-plugin-storybook'
 
 const reactQueryLinter = {
   plugins: {
@@ -17,17 +20,45 @@ const consoleLinter = {
   },
 }
 
-const linterIgnore = { ignores: ['dist', '**/public/*'] }
+const defaultTsConfigForEslint = {
+  files: ['**/*.ts', '**/*.tsx'],
+  languageOptions: {
+    parser: tsParser,
+    parserOptions: {
+      project: './tsconfig.node.json', // Specify your tsconfig.json if needed
+      allowDefaultProject: true, // Allow default project configuration
+    },
+  },
+  plugins: {
+    '@typescript-eslint': tsPlugin,
+  },
+  rules: {
+    // Your rules here
+  },
+}
+
+const linterIgnore = { ignores: ['dist', '**/public/*', '!.storybook'] }
 
 export default antfu(
   {
     test: true,
     react: true,
-    typescript: { tsconfigPath: 'tsconfig.node.json' },
+    typescript: { tsconfigPath: './tsconfig.node.json' },
   },
   reactQueryLinter,
   linterIgnore,
   consoleLinter,
+  defaultTsConfigForEslint,
+  ...storybook.configs['flat/recommended'],
+  {
+    files: ['**/*.stories.@(ts|tsx|js|jsx|mjs|cjs)'],
+    rules: {
+      // example of overriding a rule
+      'storybook/hierarchy-separator': 'error',
+      // example of disabling a rule
+      'storybook/default-exports': 'off',
+    },
+  },
   {
     rules: {
       'node/prefer-global/process': 'off',
