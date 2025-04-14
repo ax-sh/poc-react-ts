@@ -118,21 +118,15 @@ function DropFileOverlay({
   children,
 }: PropsWithChildren<DropFileOverlayProps>) {
   const onDrop = useCallback(onFileDrop, [onFileDrop])
-  // const onDrop = useCallback(
-  //   (acceptedFiles: File[], _fileRejections: FileRejection[], _event: DropEvent) => {
-  //     onFileDrop(acceptedFiles)
-  //   },
-  //   [onFileDrop],
-  // )
 
-  const { getRootProps, getInputProps, isDragActive, isFocused } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept,
     maxSize,
     maxFiles,
     noClick,
   })
-  const hideHint = !!(isFocused || noClick)
+  const hideHint = !isDragActive && noClick
   return (
     <section className={clsx('h-full w-full grid ', !hideHint && 'cursor-pointer')}>
       <div {...getRootProps()} className="grid place-content-center h-full w-full">
@@ -147,7 +141,6 @@ function DropFileOverlay({
               {isDragActive ? ' Drop the files here...' : 'Drag \'n\' drop some files here, or click to select files'}
             </p>
             {/* <p className="text-gray-400 text-xs">Maximum file size 50 MB</p> */}
-
           </div>
         </div>
 
