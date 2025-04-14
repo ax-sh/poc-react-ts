@@ -125,32 +125,31 @@ function DropFileOverlay({
   //   [onFileDrop],
   // )
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive, isFocused } = useDropzone({
     onDrop,
     accept,
     maxSize,
     maxFiles,
     noClick,
   })
-const hideHint = !noClick
+  const hideHint = !!(isFocused || noClick)
   return (
-    <section className={clsx('h-full w-full grid ', !noClick && 'cursor-pointer')}>
+    <section className={clsx('h-full w-full grid ', !hideHint && 'cursor-pointer')}>
       <div {...getRootProps()} className="grid place-content-center h-full w-full">
         <input {...getInputProps()} />
 
-          <div className="border-2 border-dashed border-blue-200 rounded-lg p-8 mb-6">
-            <div className="flex flex-col items-center justify-center">
-              <div className="bg-blue-100 p-3 rounded-full mb-4">
-                <Upload className="text-blue-500" size={24} />
-              </div>
-              <p className="text-gray-500 text-sm mb-1 text-center w-[400px]">
-
-                {isDragActive ? ' Drop the files here...' : 'Drag \'n\' drop some files here, or click to select files'}
-              </p>
-              {/* <p className="text-gray-400 text-xs">Maximum file size 50 MB</p> */}
-
+        <div className={clsx('border-2 border-dashed border-blue-200 rounded-lg p-8 mb-6', hideHint && 'hidden')}>
+          <div className="flex flex-col items-center justify-center">
+            <div className="bg-blue-100 p-3 rounded-full mb-4">
+              <Upload className="text-blue-500" size={24} />
             </div>
+            <p className="text-gray-500 text-sm mb-1 text-center w-[400px]">
+              {isDragActive ? ' Drop the files here...' : 'Drag \'n\' drop some files here, or click to select files'}
+            </p>
+            {/* <p className="text-gray-400 text-xs">Maximum file size 50 MB</p> */}
+
           </div>
+        </div>
 
         {children}
       </div>
