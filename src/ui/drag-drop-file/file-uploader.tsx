@@ -16,8 +16,7 @@ function UploadComponent() {
   )
 }
 
-type FileWithProgress = File & { progress: number ,size:number}
-
+type FileWithProgress = Omit<File, 'size'> & { progress: number, size: string }
 
 function UploadFIleCard(props: {
   file: FileWithProgress
