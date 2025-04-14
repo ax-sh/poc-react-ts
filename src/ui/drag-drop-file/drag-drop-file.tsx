@@ -1,13 +1,10 @@
-import type { PropsWithChildren } from 'react'
+import type { ComponentProps, PropsWithChildren } from 'react'
 import type { DropEvent, DropzoneOptions, FileRejection } from 'react-dropzone'
 import clsx from 'clsx'
 import { Upload, X } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 
-/**
- * Props for the DropFileOverlay component
- */
 type OnDropFunction = <T extends File>(
   acceptedFiles: T[],
   fileRejections: FileRejection[],
@@ -17,8 +14,21 @@ type OnDropFunction = <T extends File>(
 type DropFileOverlayProps = Pick<DropzoneOptions, 'accept' | 'maxFiles' | 'maxSize' | 'noClick'> & {
   /** Function called when files are dropped */
   onFileDrop: OnDropFunction
-  // onFileDrop: (acceptedFiles: File[]) => void
+}
 
+function UploadHintCard({ children, className }: ComponentProps<'div'>) {
+  return (
+    <div
+      className={clsx('border-2 border-dashed border-blue-200 rounded-lg p-8 m-6', className)}
+    >
+      <div className="flex flex-col items-center justify-center">
+        <div className="bg-blue-100 p-3 rounded-full mb-4">
+          <Upload className="text-blue-500" size={24} />
+        </div>
+        {children}
+      </div>
+    </div>
+  )
 }
 
 /**
@@ -47,20 +57,11 @@ function DropFileOverlay({
       <div {...getRootProps()} className="grid place-content-center h-full w-full">
         <input {...getInputProps()} />
 
-        <div
-          className={clsx('border-2 border-dashed border-blue-200 rounded-lg p-8 m-6', hideHint && 'hidden')}
-        >
-          <div className="flex flex-col items-center justify-center">
-            <div className="bg-blue-100 p-3 rounded-full mb-4">
-              <Upload className="text-blue-500" size={24} />
-            </div>
-            <p className="text-gray-500 text-sm mb-1 text-center w-[400px]">
-              {isDragActive ? ' Drop the files here...' : 'Drag \'n\' drop some files here, or click to select files'}
-            </p>
-            {/* <p className="text-gray-400 text-xs">Maximum file size 50 MB</p> */}
-          </div>
-        </div>
-
+        <UploadHintCard className={clsx(hideHint && 'hidden')}>
+          <p className="text-gray-500 text-sm mb-1 text-center w-[400px]">
+            {isDragActive ? ' Drop the files here...' : 'Drag \'n\' drop some files here, or click to select files'}
+          </p>
+        </UploadHintCard>
         {children}
       </div>
     </section>
@@ -68,7 +69,11 @@ function DropFileOverlay({
 }
 
 function FileCard({ data }: { data: File }) {
-  return <div>{data.name}</div>
+  return (
+    <div>
+      <span>{data.name}</span>
+    </div>
+  )
 }
 
 interface RemoveButtonProps {
