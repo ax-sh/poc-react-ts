@@ -9,18 +9,23 @@ import { useDropzone } from 'react-dropzone'
 type OnDropFunction = <T extends File>(
   acceptedFiles: T[],
   fileRejections: FileRejection[],
-  event: DropEvent
+  event: DropEvent,
 ) => void
 
-type DropFileOverlayProps = Pick<DropzoneOptions, 'accept' | 'maxFiles' | 'maxSize' | 'noClick'> & {
-  /** Function called when files are dropped */
-  onFileDrop: OnDropFunction
-}
+type DropFileOverlayProps =
+  & Pick<DropzoneOptions, 'accept' | 'maxFiles' | 'maxSize' | 'noClick'>
+  & {
+    /** Function called when files are dropped */
+    onFileDrop: OnDropFunction
+  }
 
 function UploadHintCard({ children, className }: ComponentProps<'div'>) {
   return (
     <div
-      className={clsx('border-2 border-dashed border-blue-200 rounded-lg p-8 m-6', className)}
+      className={clsx(
+        'border-2 border-dashed border-blue-200 rounded-lg p-8 m-6',
+        className,
+      )}
     >
       <div className="flex flex-col items-center justify-center">
         <div className="bg-blue-100 p-3 rounded-full mb-4">
@@ -54,13 +59,20 @@ function DropFileOverlay({
   })
   const hideHint = !isDragActive && noClick
   return (
-    <section className={clsx('h-full w-full grid ', !hideHint && 'cursor-pointer')}>
-      <div {...getRootProps()} className="grid place-content-center h-full w-full">
+    <section
+      className={clsx('h-full w-full grid ', !hideHint && 'cursor-pointer')}
+    >
+      <div
+        {...getRootProps()}
+        className="grid place-content-center h-full w-full"
+      >
         <input {...getInputProps()} />
 
         <UploadHintCard className={clsx(hideHint && 'hidden')}>
           <p className="text-gray-500 text-sm mb-1 text-center w-full max-w-md">
-            {isDragActive ? ' Drop the files here...' : 'Drag \'n\' drop some files here, or click to select files'}
+            {isDragActive
+              ? ' Drop the files here...'
+              : 'Drag \'n\' drop some files here, or click to select files'}
           </p>
         </UploadHintCard>
         {children}

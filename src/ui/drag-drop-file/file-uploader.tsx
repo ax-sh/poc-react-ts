@@ -8,7 +8,9 @@ function UploadComponent() {
         <div className="bg-blue-100 p-3 rounded-full mb-4">
           <Upload className="text-blue-500" size={24} />
         </div>
-        <button type="button" className="text-blue-500 font-medium mb-2">Click to upload</button>
+        <button type="button" className="text-blue-500 font-medium mb-2">
+          Click to upload
+        </button>
         <p className="text-gray-500 text-sm mb-1">or drag and drop</p>
         <p className="text-gray-400 text-xs">Maximum file size 50 MB</p>
       </div>
@@ -75,27 +77,41 @@ export function FileUploader() {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white rounded-lg shadow-md p-6 w-full max-w-xl">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-medium text-gray-700">Upload and attach files</h2>
+          <h2 className="text-lg font-medium text-gray-700">
+            Upload and attach files
+          </h2>
           <button type="button" className="text-gray-500 hover:text-gray-700">
             <X size={20} />
           </button>
         </div>
 
-        <p className="text-sm text-gray-500 mb-6">Supported formats: cvs, xls, xlsx</p>
+        <p className="text-sm text-gray-500 mb-6">
+          Supported formats: cvs, xls, xlsx
+        </p>
 
         <UploadComponent />
 
         <div className="space-y-4 mb-6">
           {files.map((file, index) => (
-            <UploadFIleCard key={index} file={file} onClick={() => handleRemoveFile(index)} />
+            <UploadFIleCard
+              key={index}
+              file={file}
+              onClick={() => handleRemoveFile(index)}
+            />
           ))}
         </div>
 
         <div className="flex justify-end space-x-3">
-          <button type="button" className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+          <button
+            type="button"
+            className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+          >
             Cancel
           </button>
-          <button type="button" className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+          <button
+            type="button"
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+          >
             Attach files
           </button>
         </div>
