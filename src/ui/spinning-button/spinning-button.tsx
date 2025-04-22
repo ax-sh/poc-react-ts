@@ -1,4 +1,6 @@
-export default function SpinningButton() {
+import { useEffect, useState } from 'react'
+
+export function SpinningButtonSimple() {
   return (
     <section className="h-dvh w-dvw bg-white rounded-lg shadow-md p-6">
       <div className="button-container relative w-[300px] h-[80px]">
@@ -44,5 +46,135 @@ export default function SpinningButton() {
         </div>
       </div>
     </section>
+  )
+}
+
+interface SpinningBorderButtonProps {
+  /** Text content of the button */
+  children: React.ReactNode
+  /** Width of the button */
+  width?: number
+  /** Height of the button */
+  height?: number
+  /** Base/background color of the button */
+  baseColor?: string
+  /** Color of the animated border */
+  borderColor?: string
+  /** Color of the indicator circle */
+  circleColor?: string
+  /** Color of the text/content */
+  textColor?: string
+  /** Duration of the spinning animation in seconds */
+  animationDuration?: number
+  /** Event handler for button click */
+  onClick?: () => void
+  /** Indicator circle size */
+  circleSize?: number
+  /** Border radius of the button corners */
+  borderRadius?: number
+  /** If true, reverses the animation direction */
+  reverseAnimation?: boolean
+  /** Thickness of the spinning border */
+  borderWidth?: number
+  /** Optional additional CSS classes */
+  className?: string
+}
+
+export default function SpinningBorderButton({
+  children,
+  width = 280,
+  height = 80,
+  baseColor = '#E6E7EA',
+  borderColor = '#0FC27B',
+  circleColor = '#266DF0',
+  textColor = '#266DF0',
+  animationDuration = 1.5,
+  onClick,
+  circleSize = 5,
+  borderRadius = 12,
+  reverseAnimation = false,
+  borderWidth = 1,
+  className = '',
+}: SpinningBorderButtonProps) {
+  const [isHovered, setIsHovered] = useState(false)
+  const [dashOffset, setDashOffset] = useState(0)
+
+  // Create the path for the rounded rectangle
+  const generatePath = () => {
+    const w = width
+    const h = height
+    const r = borderRadius
+
+    return `M ${w / 2} 0.5 L ${w - r} 0.5 A ${r} ${r} 0 0 1 ${w - 0.5} ${r} L ${w - 0.5} ${h - r} A ${r} ${r} 0 0 1 ${w - r} ${h - 0.5} L ${r} ${h - 0.5} A ${r} ${r} 0 0 1 0.5 ${h - r} L 0.5 ${r} A ${r} ${r} 0 0 1 ${r} 0.5 L ${w / 2} 0.5`
+  }
+
+  // Animation effect
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setDashOffset((prev) => {
+        const step = 0.01
+        return reverseAnimation ? prev - step : prev + step
+      })
+    }, 16) // ~60fps
+
+    return () => clearInterval(intervalId)
+  }, [reverseAnimation])
+
+  return (
+    <button
+      type="button"
+      className={`relative ${className}`}
+      style={{ width, height }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={onClick}
+    >
+      <div className="absolute inset-0 cursor-pointer">
+        <svg className="w-full h-full overflow-visible">
+          {/* Base shape */}
+          <path
+            d={generatePath()}
+            fill="white"
+            stroke={baseColor}
+            strokeWidth={borderWidth}
+          />
+
+          {/* Animated border */}
+          <path
+            d={generatePath()}
+            fill="none"
+            stroke={borderColor}
+            strokeWidth={borderWidth}
+            pathLength="1"
+            strokeDasharray="1.01 1"
+            strokeDashoffset={dashOffset}
+            style={{
+              transition: `stroke ${animationDuration * 0.2}s`,
+            }}
+          />
+
+          {/* Circle indicator */}
+          <circle
+            cx={width / 2}
+            cy={height - 0.5}
+            r={circleSize}
+            fill="white"
+            stroke={isHovered ? borderColor : circleColor}
+            strokeWidth={borderWidth}
+            style={{
+              transition: `stroke ${animationDuration * 0.2}s`,
+            }}
+          />
+        </svg>
+      </div>
+
+      {/* Button content */}
+      <div
+        className="absolute inset-0 flex items-center justify-center font-medium"
+        style={{ color: textColor, zIndex: 10 }}
+      >
+        {children}
+      </div>
+    </button>
   )
 }
